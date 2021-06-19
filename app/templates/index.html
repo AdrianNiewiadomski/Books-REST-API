@@ -5,19 +5,48 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Books</title>
 
     <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
         #books tr:nth-child(2n) {
             background-color: #dddddd;
+        }
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
         }
     </style>
 </head>
 <body>
     <form action="/books" method="get">
-      Filter by name: &nbsp;
+      Filter by author name. &nbsp;
+      Author 1:
       <input type="text" name="author"> &nbsp;
+      Author 2:
+      <input type="text" name="author">&nbsp;&nbsp;
       <input type="submit" value="Filter">
+    </form>
+
+    <form action="/books" method="get">
+      Filter by published date: &nbsp;
+      <input type="text" name="published_date"> &nbsp;
+      <input type="submit" value="Filter">
+    </form>
+
+    <form action="/books">
+        Sort by published date:
+      <select name="sort">
+          <option selected="selected" disabled="disabled">Select sorting order</option>
+          <option value="published_date">Ascending</option>
+          <option value="-published_date">Descending</option>
+      </select>
+      <input type="submit" value="Sort">
     </form>
 
     <table id="books">

@@ -9,7 +9,7 @@ def select_all_books():
 
 
 def insert_book(author, title, published_date):
-    db.session.add(Book(author, title, published_date))
+    db.session.add(Book(author, title, published_date, "", 0))
     db.session.commit()
 
 
@@ -23,8 +23,8 @@ def initialize_database():
         insert_book("Rothfuss", "The Name of the Wind", 2007)
 
 
-def select_books_by_author(author):
-    return Book.query.filter_by(author=author).all()
+def select_books_by_author(authors):
+    return Book.query.filter_by(authors=authors).all()
 
 
 @app.route("/books")

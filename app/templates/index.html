@@ -1,0 +1,10 @@
+<form action="/books" method="get">
+  Filter by name: &nbsp;
+  <input type="text" name="author"> &nbsp;
+  <input type="submit" value="Filter">
+</form>
+
+
+{% for book in books: %}
+    <p>{{book}}</p>
+{% endfor %}

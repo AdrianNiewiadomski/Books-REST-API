@@ -1,12 +1,5 @@
-from flask import Flask
-
-app = Flask(__name__)
-
-
-@app.route("/")
-def display_home_page():
-    return "Hello World!"
+from app import controller
 
 
 if __name__ == "__main__":
-    app.run()
+    controller.run()

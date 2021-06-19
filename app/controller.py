@@ -1,3 +1,4 @@
+import json
 import logging
 
 from flask import render_template, request, redirect, url_for
@@ -13,8 +14,7 @@ def select_all_books():
     return Book.query.all()
 
 
-def insert_book(author, title, published_date):
-    book = Book(author, title, published_date, "", 0)
+def insert_book(book):
     logging.debug(f"Adding {book} to database.")
     db.session.add(book)
     db.session.commit()
@@ -25,13 +25,13 @@ def initialize_database():
     logging.debug("The database has been created.")
 
     if len(select_all_books()) < 7:
-        # insert_book("Tolkien", "Hobbit", 2004)
-        # insert_book("Rowling", "Harry Potter", 1997)
-        # insert_book("Martin", "A Game of Thrones", 1996)
-        # insert_book("Rothfuss", "The Name of the Wind", 2007)
-        # insert_book(["W. Krysicki", "L. Wlodarski"], "Analiza matematyczna w zadaniach", 2003)
-        # insert_book("R. C. Martin", "Czysty kod", 2009)
-        insert_book("M. Lutz", "Python. Wprowadzenie", 2011)
+        insert_book(Book(["J. R. R. Tolkien"], "Hobbit czyli Tam i z powrotem", 2004))
+        insert_book(Book(["Rowling"], "Harry Potter", 1997))
+        insert_book(Book(["Martin"], "A Game of Thrones", 1996))
+        insert_book(Book(["Rothfuss"], "The Name of the Wind", 2007))
+        insert_book(Book(["W. Krysicki", "L. Wlodarski"], "Analiza matematyczna w zadaniach", 2003))
+        insert_book(Book(["R. C. Martin"], "Czysty kod", 2009))
+        insert_book(Book(["M. Lutz"], "Python. Wprowadzenie", 2011))
 
 
 def select_books_by_authors(args):
@@ -86,8 +86,33 @@ def display_books():
 @app.route("/books/<bookId>")
 def select_book_by_id(bookId):
     book = Book.query.filter_by(id=bookId).first()
-    print("Book: ", book)
+    logging.debug(f"Book selected by id: {book}")
     return book.to_json()
+
+
+def update_book(old_book, new_book):
+    old_book.published_date = new_book.published_date
+    old_book.categories = new_book.categories
+    old_book.average_rating = new_book.average_rating
+    old_book.ratings_count = new_book.ratings_count
+    old_book.thumbnail = new_book.thumbnail
+    logging.debug(f"Updating {new_book}.")
+    db.session.commit()
+
+
+@app.route("/db", methods=["POST"])
+def update_database():
+    data = json.loads(request.data.decode('utf8'))
+    logging.info(f"The following data has been received: {data}")
+    new_book = Book(**data)
+
+    books = select_all_books()
+    for book in books:
+        if book == new_book:
+            update_book(book, new_book)
+            return "<h1>Success!</h1><p>A book has been updated.</p>"
+    insert_book(new_book)
+    return "<h1>Success!</h1><p>A new book has been inserted.</p>"
 
 
 @app.errorhandler(404)
@@ -98,4 +123,4 @@ def page_not_found(e):
 
 def run():
     initialize_database()
-    app.run()
+    app.run(debug=True)

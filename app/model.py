@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-# import json
+
 from . import db
 
 
@@ -13,11 +13,14 @@ class Book(db.Model):
     ratings_count = Column(Integer)
     thumbnail = Column(String(100))
 
-    def __init__(self, authors, title, published_date, categories, ratings_count, average_rating=0, thumbnail=""):
-        self.authors = str(authors)
+    def __init__(self, authors, title, published_date, categories=None, average_rating=0, ratings_count=0,
+                 thumbnail=""):
+        self.authors = Book._get_string_from_list(authors)
         self.title = title
         self.published_date = published_date
-        self.categories = str(categories)
+        if categories is None:
+            categories = [""]
+        self.categories = Book._get_string_from_list(categories)
         self.average_rating = average_rating
         self.ratings_count = ratings_count
         self.thumbnail = thumbnail
@@ -25,18 +28,27 @@ class Book(db.Model):
     def __str__(self):
         return f"Book({self.authors}, {self.title}, {self.published_date})"
 
-    def get_authors(self):
-        if "[" in self.authors:
-            return self.authors.replace("[", "").replace("]", "").replace("]", "").replace("'", "")
-        return self.authors
+    def __eq__(self, other):
+        if isinstance(self, other.__class__):
+            return self.authors == other.authors and self.title == other.title
+        else:
+            return False
+
+    @staticmethod
+    def _get_string_from_list(list_of_strings):
+        string_from_list = list_of_strings.pop(0)
+        if len(list_of_strings) > 0:
+            for item in list_of_strings:
+                string_from_list += ', ' + item
+        return string_from_list
 
     def to_json(self):
         return {
             "title": self.title,
-            "authors": self.authors,
+            "authors": self.authors.split(", "),
             "published_date": self.published_date,
-            "categories": self.categories,
+            "categories": self.categories.split(", "),
             "average_rating": self.average_rating,
             "ratings_count": self.ratings_count,
-            "thumbnail": self.thumbnail,
+            "thumbnail": self.thumbnail
         }

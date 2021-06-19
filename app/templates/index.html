@@ -60,7 +60,7 @@
         </tr>
         {% for book in books: %}
         <tr>
-            <td>{{ book.get_authors() }}</td>
+            <td>{{ book.authors }}</td>
             <td>{{book.title}}</td>
             <td>{{book.published_date}}</td>
         </tr>
@@ -68,7 +68,3 @@
     </table>
 </body>
 </html>
-
-
-
-

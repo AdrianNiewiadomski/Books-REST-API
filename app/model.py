@@ -23,4 +23,9 @@ class Book(db.Model):
         self.thumbnail = thumbnail
 
     def __str__(self):
-        return f"Book({self.author}, {self.title}, {self.published_date})"
+        return f"Book({self.authors}, {self.title}, {self.published_date})"
+
+    def get_authors(self):
+        if "[" in self.authors:
+            return self.authors.replace("[", "").replace("]", "").replace("]", "").replace("'", "")
+        return self.authors

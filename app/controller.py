@@ -87,7 +87,7 @@ def display_books():
 def select_book_by_id(bookId):
     book = Book.query.filter_by(id=bookId).first()
     print("Book: ", book)
-    return
+    return book.to_json()
 
 
 @app.errorhandler(404)

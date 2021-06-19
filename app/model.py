@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-
+# import json
 from . import db
 
 
@@ -29,3 +29,14 @@ class Book(db.Model):
         if "[" in self.authors:
             return self.authors.replace("[", "").replace("]", "").replace("]", "").replace("'", "")
         return self.authors
+
+    def to_json(self):
+        return {
+            "title": self.title,
+            "authors": self.authors,
+            "published_date": self.published_date,
+            "categories": self.categories,
+            "average_rating": self.average_rating,
+            "ratings_count": self.ratings_count,
+            "thumbnail": self.thumbnail,
+        }

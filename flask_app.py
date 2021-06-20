@@ -3,8 +3,8 @@ import logging
 
 from flask import render_template, request, redirect, url_for
 
-from . import app, db
-from .model import Book
+from app import app, db
+from app.model import Book
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -21,17 +21,17 @@ def insert_book(book):
 
 
 def initialize_database():
+    db.drop_all()
     db.create_all()
     logging.debug("The database has been created.")
 
-    if len(select_all_books()) < 7:
-        insert_book(Book(["J. R. R. Tolkien"], "Hobbit czyli Tam i z powrotem", 2004))
-        insert_book(Book(["Rowling"], "Harry Potter", 1997))
-        insert_book(Book(["Martin"], "A Game of Thrones", 1996))
-        insert_book(Book(["Rothfuss"], "The Name of the Wind", 2007))
-        insert_book(Book(["W. Krysicki", "L. Wlodarski"], "Analiza matematyczna w zadaniach", 2003))
-        insert_book(Book(["R. C. Martin"], "Czysty kod", 2009))
-        insert_book(Book(["M. Lutz"], "Python. Wprowadzenie", 2011))
+    insert_book(Book(["J. R. R. Tolkien"], "Hobbit czyli Tam i z powrotem", 2004))
+    insert_book(Book(["Rowling"], "Harry Potter", 1997))
+    insert_book(Book(["Martin"], "A Game of Thrones", 1996))
+    insert_book(Book(["Rothfuss"], "The Name of the Wind", 2007))
+    insert_book(Book(["W. Krysicki", "L. Wlodarski"], "Analiza matematyczna w zadaniach", 2003))
+    insert_book(Book(["R. C. Martin"], "Czysty kod", 2009))
+    insert_book(Book(["M. Lutz"], "Python. Wprowadzenie", 2011))
 
 
 def select_books_by_authors(args):
@@ -121,6 +121,8 @@ def page_not_found(e):
     return f"<h1>404</h1><p>{str(e)}</p>", 404
 
 
-def run():
-    initialize_database()
+initialize_database()
+
+# Nie wrzucac do pythonanywhere
+if __name__ == "__main__":
     app.run(debug=True)

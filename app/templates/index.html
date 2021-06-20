@@ -7,64 +7,47 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Books</title>
 
-    <style>
-    form{
-     margin-bottom: 10px;
-    }
-        table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        #books tr:nth-child(2n) {
-            background-color: #eee;
-        }
-        td, th {
-          border: 1px solid #ddd;
-          text-align: left;
-          padding: 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <form action="/books" method="get">
-      Filter by author name. &nbsp;
-      Author 1:
-      <input type="text" name="author"> &nbsp;
-      Author 2:
-      <input type="text" name="author">&nbsp;&nbsp;
-      <input type="submit" value="Filter">
-    </form>
+<form action="/books" method="get">
+    Filter by author name. &nbsp;
+    Author 1:
+    <input type="text" name="author"> &nbsp;
+    Author 2:
+    <input type="text" name="author">&nbsp;&nbsp;
+    <input type="submit" value="Filter">
+</form>
 
-    <form action="/books" method="get">
-      Filter by published date: &nbsp;
-      <input type="text" name="published_date"> &nbsp;
-      <input type="submit" value="Filter">
-    </form>
+<form action="/books" method="get">
+    Filter by published date: &nbsp;
+    <input type="text" name="published_date"> &nbsp;
+    <input type="submit" value="Filter">
+</form>
 
-    <form action="/books">
-        Sort by published date:
-      <select name="sort">
-          <option selected="selected" disabled="disabled">Select sorting order</option>
-          <option value="published_date">Ascending</option>
-          <option value="-published_date">Descending</option>
-      </select>
-      <input type="submit" value="Sort">
-    </form>
+<form action="/books">
+    Sort by published date:
+    <select name="sort">
+        <option selected="selected" disabled="disabled">Select sorting order</option>
+        <option value="published_date">Ascending</option>
+        <option value="-published_date">Descending</option>
+    </select>
+    <input type="submit" value="Sort">
+</form>
 
-    <table id="books">
-        <tr>
-            <th>Authors</th>
-            <th>Title</th>
-            <th>Published date</th>
-        </tr>
-        {% for book in books: %}
-        <tr>
-            <td>{{ book.authors }}</td>
-            <td>{{book.title}}</td>
-            <td>{{book.published_date}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<table id="books">
+    <tr>
+        <th>Authors</th>
+        <th>Title</th>
+        <th>Published date</th>
+    </tr>
+    {% for book in books: %}
+    <tr>
+        <td>{{ book.authors }}</td>
+        <td>{{book.title}}</td>
+        <td>{{book.published_date}}</td>
+    </tr>
+    {% endfor %}
+</table>
 </body>
 </html>

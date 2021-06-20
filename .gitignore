@@ -1,3 +1,2 @@
 .idea/
 app/__pycache__/
-app/db/books.sqlite3
